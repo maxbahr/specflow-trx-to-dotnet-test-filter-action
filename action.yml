@@ -1,0 +1,28 @@
+name: Specflow Trx to Dotnet Filter Tests
+description: |
+  Parse specflow dotnet trx files and generate list of test names. Primarly it is used to rerun failed tests.
+author: 'Maksymilian Bahr <maks.bahr@gmail.com>'
+branding:
+  icon: file-text
+  color: green
+
+inputs:
+  trxDirPath:
+    description:
+      Specifies the directory path where your test result files (.trx files) are located. Test result files are
+      generated typically by dotnet testing frameworks.
+    required: false
+    default: '.'
+  testOutcome:
+    description:
+      Define the expected test outcome to filter and exclude tests with matching results. (Passed | Failed | Ignored)
+    required: false
+    default: 'Failed'
+
+outputs:
+  testFilter:
+    description: 'Use testFilter output with the command: dotnet test --filter "{testFilter}"'
+
+runs:
+  using: node20
+  main: dist/index.js
