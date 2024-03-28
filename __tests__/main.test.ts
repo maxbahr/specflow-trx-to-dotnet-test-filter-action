@@ -32,6 +32,8 @@ describe('action', () => {
       switch (name) {
         case 'trxDirPath':
           return '__tests__/trx';
+        case 'testOutcome':
+          return 'Failed';
         default:
           return '';
       }

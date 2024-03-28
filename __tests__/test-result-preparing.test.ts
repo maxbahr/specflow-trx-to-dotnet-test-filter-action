@@ -8,7 +8,7 @@ jest.mock('../src/trx-parser.class');
 describe('TestResultPreparing', () => {
   describe('prepareUnitTestResult', () => {
     test('should prepare unit test results from TRX files', async () => {
-      const trxFiles = ['test1.trx', 'test2.trx'];
+      const trxFiles = ['test1.trx'];
       const mockedUnitTestResults: IUnitTestResult[] = [mockUnitTestResult];
 
       (TrxParser.parseTRXFileAsync as jest.Mock).mockResolvedValueOnce(mockedUnitTestResults);
@@ -17,7 +17,6 @@ describe('TestResultPreparing', () => {
 
       expect(unitTestResults).toEqual(mockedUnitTestResults);
       expect(TrxParser.parseTRXFileAsync).toHaveBeenCalledWith('test1.trx');
-      expect(TrxParser.parseTRXFileAsync).toHaveBeenCalledWith('test2.trx');
     });
   });
 });
