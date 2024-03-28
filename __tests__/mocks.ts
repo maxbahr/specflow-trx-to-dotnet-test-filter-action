@@ -32,7 +32,8 @@ export const mockUnitTestResult: IUnitTestResult = {
     }
   ],
   errMsg: null,
-  rerun: false
+  rerun: false,
+  testMethodPath: 'B2C.B2C_SignInAndSignUpFeature.SignUp'
 };
 
 export const mockTrxParsedResult: IUnitTestResult[] = [
@@ -356,7 +357,8 @@ export const mockTrxParsedResult: IUnitTestResult[] = [
       }
     ],
     errMsg: 'System.Exception : There is no email with Verify your Email Address after 3/12/2024 5:13:38 AM',
-    rerun: false
+    rerun: false,
+    testMethodPath: 'B2C.B2C_SignInAndSignUpFeature.SignUp'
   },
   {
     testId: 'e9e9cfd1-a7ad-b87c-11ce-a511407fda4a',
@@ -495,6 +497,7 @@ export const mockTrxParsedResult: IUnitTestResult[] = [
       }
     ],
     errMsg: '',
-    rerun: false
+    rerun: false,
+    testMethodPath: 'B2C.B2C_SignInAndSignUpFeature.SignInAndSignOut'
   }
 ];

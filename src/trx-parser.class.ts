@@ -51,7 +51,9 @@ export class TrxParser {
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 (test: any) => test.$.id === testId
               );
-              const className = unitTest.TestMethod[0].$.className;
+              const testMethod = unitTest.TestMethod[0];
+              const testMethodPath = `${testMethod.$.className}.${testMethod.$.name}`;
+              const className = testMethod.$.className;
               const parts = className.split('.');
               const testDomain = parts[parts.length - 2];
               const featurName = parts[parts.length - 1].replace('_', ' - ').replace('Feature', '');
@@ -76,7 +78,8 @@ export class TrxParser {
                 stdout: output,
                 gherkinLogs: GherkinLogs.parseGherkinLogs(output),
                 errMsg: err,
-                rerun: false
+                rerun: false,
+                testMethodPath
               });
             }
           }

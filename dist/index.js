@@ -37266,7 +37266,10 @@ async function run() {
         const filteredUnitTestsResilts = unitTestResults.filter(ut => ut.outcome === testOutcome);
         const testFilter = prepareDotnetFilter(filteredUnitTestsResilts);
         console.log(`There are ${filteredUnitTestsResilts.length} tests in status ${testOutcome}`);
-        core.setOutput('testFilter', testFilter);
+        for (const filter of testFilter) {
+            console.log(filter);
+        }
+        core.setOutput('testFilter', testFilter.join(' | '));
     }
     catch (error) {
         // Fail the workflow run if an error occurs
@@ -37278,9 +37281,9 @@ exports.run = run;
 function prepareDotnetFilter(unitTestResults) {
     const testsNormalized = [];
     for (const ut of unitTestResults) {
-        testsNormalized.push(`DisplayName=${normalizeTestName(ut.testFullName)}`);
+        testsNormalized.push(`(${ut.testMethodPath} & DisplayName=${normalizeTestName(ut.testFullName)})`);
     }
-    return testsNormalized.join(' | ');
+    return testsNormalized;
 }
 function normalizeTestName(testname) {
     return testname.replaceAll('(', '\\(').replaceAll(')', '\\)').replaceAll('"', '%22');
@@ -37392,7 +37395,9 @@ class TrxParser {
                             const unitTest = testDefinitions.UnitTest.find(
                             // eslint-disable-next-line @typescript-eslint/no-explicit-any
                             (test) => test.$.id === testId);
-                            const className = unitTest.TestMethod[0].$.className;
+                            const testMethod = unitTest.TestMethod[0];
+                            const testMethodPath = `${testMethod.$.className}.${testMethod.$.name}`;
+                            const className = testMethod.$.className;
                             const parts = className.split('.');
                             const testDomain = parts[parts.length - 2];
                             const featurName = parts[parts.length - 1].replace('_', ' - ').replace('Feature', '');
@@ -37416,7 +37421,8 @@ class TrxParser {
                                 stdout: output,
                                 gherkinLogs: gherkin_logs_class_1.GherkinLogs.parseGherkinLogs(output),
                                 errMsg: err,
-                                rerun: false
+                                rerun: false,
+                                testMethodPath
                             });
                         }
                     }

@@ -18,21 +18,24 @@ export async function run(): Promise<void> {
     const filteredUnitTestsResilts = unitTestResults.filter(ut => ut.outcome === testOutcome);
     const testFilter = prepareDotnetFilter(filteredUnitTestsResilts);
     console.log(`There are ${filteredUnitTestsResilts.length} tests in status ${testOutcome}`);
+    for (const filter of testFilter) {
+      console.log(filter);
+    }
 
-    core.setOutput('testFilter', testFilter);
+    core.setOutput('testFilter', testFilter.join(' | '));
   } catch (error) {
     // Fail the workflow run if an error occurs
     if (error instanceof Error) core.setFailed(error.message);
   }
 }
 
-function prepareDotnetFilter(unitTestResults: IUnitTestResult[]): string {
+function prepareDotnetFilter(unitTestResults: IUnitTestResult[]): string[] {
   const testsNormalized = [];
   for (const ut of unitTestResults) {
-    testsNormalized.push(`DisplayName=${normalizeTestName(ut.testFullName)}`);
+    testsNormalized.push(`(${ut.testMethodPath} & DisplayName=${normalizeTestName(ut.testFullName)})`);
   }
 
-  return testsNormalized.join(' | ');
+  return testsNormalized;
 }
 
 function normalizeTestName(testname: string): string {

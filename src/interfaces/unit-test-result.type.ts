@@ -18,4 +18,5 @@ export interface IUnitTestResult {
   errMsg: string | null;
   rerun: boolean;
   previousRun?: IUnitTestResult;
+  testMethodPath: string;
 }
